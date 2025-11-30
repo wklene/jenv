@@ -5,7 +5,7 @@ const TodoSchema = z.object({
     id: z.number().int(),
     title: z.string(),
     description: z.string().optional(),
-    deadline: z.coerce.date().optional(),
+    deadline: z.string().optional(),
     completed: z.boolean().optional()
 });
 

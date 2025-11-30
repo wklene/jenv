@@ -1,0 +1,11 @@
+.todo-row{
+    cursor: pointer;
+    
+    &:hover{
+        background-color: rgb(233, 239, 247);
+    }
+
+    &.active{
+        background-color: rgb(224, 236, 253);
+    }
+}

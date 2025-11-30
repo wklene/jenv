@@ -1,9 +1,8 @@
-import { provideHttpClient } from '@angular/common/http';
-import { TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
-import { TodoService } from './todo.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Todo } from './todo.model';
+import { TestBed } from '@angular/core/testing';
 import z, { ZodError } from 'zod';
+import { Todo } from './todo.model';
+import { TodoService } from './todo.service';
 
 describe('TodoService', () => {
     let service: TodoService;

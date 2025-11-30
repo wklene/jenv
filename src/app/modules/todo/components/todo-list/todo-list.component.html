@@ -1,0 +1,27 @@
+<div class="p-3">
+    <h3 class="mb-3">Todo list</h3>
+
+    <!-- loading status -->
+    @if( isLoading() ) {
+    <div class="spinner-border m-2 mt-4" role="status" data-test="todo-list_loading">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    } @else{
+    <!-- loopen door de items -->
+    @for( item of todoItems(); track item.id ){
+    <div class="todo-row form-check" [class.active]="item.id == activeTodoId()" data-test="todo-list_row">
+        <input class="form-check-input" type="checkbox" [attr.id]="item.id" (change)="completeTodo(item)" [(ngModel)]="item.completed" />
+        <!-- doorklikken naar de details -->
+        <div class="d-flex col-12" [routerLink]="['/', 'todo', item.id]">
+            <div [style.width]="'inherit'">
+                <div>{{ item.title }}</div>
+                <sup>{{ item.deadline | date }}</sup>
+            </div>
+            <button type="button" class="btn">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+    }
+    }
+</div>
