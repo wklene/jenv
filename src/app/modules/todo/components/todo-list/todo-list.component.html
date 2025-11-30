@@ -1,40 +1,44 @@
-<div class="p-3">
+<div class="p-3 h-100 d-flex flex-column">
     <h3 class="mb-3">Todo list</h3>
 
     <!-- loading status -->
     @if( isLoading() ) {
-    <div class="spinner-border m-2 mt-4" role="status" data-test="todo-list_loading">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-    } @else{
-    <!-- zoek component -->
-    <app-todo-search />
-    <!-- loopen door de items -->
-    @for( item of todoItems(); track item.id ){
-    <div class="todo-row form-check" [class.active]="item.id == activeTodoId()" data-test="todo-list_row">
-        <input
-            class="form-check-input"
-            type="checkbox"
-            [attr.id]="item.id"
-            (change)="toggleTodoCompletion(item)"
-            [(ngModel)]="item.completed"
-        />
-        <!-- doorklikken naar de details -->
-        <div class="d-flex col-12" [routerLink]="['/', 'todo', item.id]" data-test="todo-list_link">
-            <div [style.width]="'inherit'">
-                <!-- tonen van de highlighted property of anders de "normale" -->
-                <div [innerHTML]="item.highlights?.title ?? item.title"></div>
-                <sup>{{ item.deadline | date }}</sup>
-            </div>
-            <button type="button" class="btn">
-                <i class="bi bi-chevron-right"></i>
-            </button>
+        <div class="spinner-border m-2 mt-4" role="status" data-test="todo-list_loading">
+            <span class="visually-hidden">Loading...</span>
         </div>
-    </div>
-    }
-    <!-- knop om nieuwe todo item toe te voegen -->
-    <button type="button" class="btn btn-outline-primary mt-3" data-test="todo-list_new" [routerLink]="['/', 'todo', 'new']">
-        Todo item toevoegen
-    </button>
+    } @else {
+        <!-- zoek component -->
+        <app-todo-search />
+
+        <!-- loopen door de items -->
+        <div class="d-flex flex-column gap-1 overflow-auto flex-grow-1">
+            @for( item of todoItems(); track item.id ) {
+                <div class="todo-row d-flex gap-3 p-2 ps-3 rounded-1" [class.active]="item.id == activeTodoId()" data-test="todo-list_row">
+                    <input
+                        class="form-check-input mt-2"
+                        type="checkbox"
+                        [attr.id]="item.id"
+                        (change)="toggleTodoCompletion(item)"
+                        [(ngModel)]="item.completed"
+                    />
+                    <!-- doorklikken naar de details -->
+                    <div class="d-flex col-11" [routerLink]="['/', 'todo', item.id]" data-test="todo-list_link">
+                        <div [style.width]="'inherit'">
+                            <!-- tonen van de highlighted property of anders de "normale" -->
+                            <div [innerHTML]="item.highlights?.title ?? item.title"></div>
+                            <sup>{{ item.deadline | date }}</sup>
+                        </div>
+                        <button type="button" class="btn">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- knop om nieuwe todo item toe te voegen -->
+        <button type="button" class="btn btn-outline-primary mt-3" data-test="todo-list_new" [routerLink]="['/', 'todo', 'new']">
+            Todo item toevoegen
+        </button>
     }
 </div>
