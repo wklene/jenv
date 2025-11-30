@@ -90,4 +90,55 @@ describe('TodoListPageComponent', () => {
         const completedInputElement = fixture.debugElement.query(By.css('input[formControlName="completed"]')).nativeElement;
         expect(completedInputElement.checked).toBe(mockTodoItems[0].completed);
     });
+
+    it('should be able to delete a todo item', () => {
+        mockTodoStore.todos.set(mockTodoItems);
+        routeParams.next({ todoId: 1 });
+        fixture.detectChanges();
+
+        fixture.debugElement.query(By.css('[data-test="todo-details_delete"]')).nativeElement.click();
+        fixture.detectChanges();
+
+        expect(mockTodoStore.deleteTodo).toHaveBeenCalledWith(1);
+    });
+
+    it('should be able to update a todo item', () => {
+        mockTodoStore.todos.set(mockTodoItems);
+        routeParams.next({ todoId: 1 });
+        fixture.detectChanges();
+
+        const titleInputElement = fixture.debugElement.query(By.css('input[formControlName="title"]')).nativeElement;
+        titleInputElement.value = 'changed title';
+        titleInputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+
+        fixture.debugElement.query(By.css('[data-test="todo-details_save"]')).nativeElement.click();
+        fixture.detectChanges();
+
+        expect(mockTodoStore.updateTodo).toHaveBeenCalledWith({
+            ...mockTodoItems[0],
+            title: 'changed title'
+        });
+    });
+
+    it('should be able to add a new todo item', () => {
+        mockTodoStore.todos.set(mockTodoItems);
+        routeParams.next({ todoId: 'new' });
+        fixture.detectChanges();
+
+        const titleInputElement = fixture.debugElement.query(By.css('input[formControlName="title"]')).nativeElement;
+        titleInputElement.value = 'changed title';
+        titleInputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+
+        fixture.debugElement.query(By.css('[data-test="todo-details_save"]')).nativeElement.click();
+        fixture.detectChanges();
+
+        expect(mockTodoStore.addTodo).toHaveBeenCalledWith({
+            title: 'changed title',
+            completed: false,
+            deadline: '',
+            description: ''
+        });
+    });
 });

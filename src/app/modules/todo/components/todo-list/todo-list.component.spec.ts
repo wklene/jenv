@@ -2,9 +2,9 @@ import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-import { mockTodoItems, mockTodoStore } from '../../todo.mock';
+import { mockHighlightedTodoItems, mockTodoItems, mockTodoStore } from '../../todo.mock';
 import { TodoStore } from '../todo.store';
 import { TodoListComponent } from './todo-list.component';
 
@@ -14,7 +14,8 @@ describe('TodoListPageComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, DatePipe]
+            imports: [HttpClientTestingModule, DatePipe],
+            providers: [provideRouter([])]
         }).compileComponents();
 
         // we overschrijven hier de provided TodoStore en pakken hier onze mocked store.
@@ -47,9 +48,10 @@ describe('TodoListPageComponent', () => {
 
     describe('showing items', () => {
         beforeEach(() => {
-            mockTodoStore.todos.set(mockTodoItems);
+            mockTodoStore.filteredTodos.set(mockTodoItems);
             fixture.detectChanges();
         });
+
         it('should show a list of todo items if available', () => {
             const pipe = new DatePipe('en');
 
@@ -65,5 +67,45 @@ describe('TodoListPageComponent', () => {
                 expect(row.query(By.css('input[type="checkbox"]')).nativeElement.checked).toBe(mockTodoItems[index].completed);
             });
         });
+
+        it('should be able to navigate to details of an item', () => {
+            const router = TestBed.inject(Router);
+            router.navigateByUrl = jest.fn();
+
+            fixture.debugElement.query(By.css('[data-test="todo-list_link"]')).nativeElement.click();
+            fixture.detectChanges();
+
+            expect(router.navigateByUrl).toHaveBeenCalledWith(router.createUrlTree([`/todo/1`]), expect.any(Object));
+        });
+
+        it('should be able to complete a todo', () => {
+            const row = fixture.debugElement.query(By.css('[data-test="todo-list_row"]'));
+            row.query(By.css('input[type="checkbox"]')).nativeElement.click();
+
+            fixture.detectChanges();
+
+            expect(mockTodoStore.updateTodo).toHaveBeenCalledWith({
+                ...mockTodoItems[0],
+                completed: true
+            });
+        });
+    });
+
+    it('should be able to show higlights', () => {
+        mockTodoStore.filteredTodos.set(mockHighlightedTodoItems);
+        fixture.detectChanges();
+
+        const row = fixture.debugElement.query(By.css('[data-test="todo-list_row"]'));
+        expect(row.nativeElement.innerHTML).toContain(mockHighlightedTodoItems[0].highlights?.title);
+    });
+
+    it('should be able to add new todo', () => {
+        const router = TestBed.inject(Router);
+        router.navigateByUrl = jest.fn();
+
+        fixture.debugElement.query(By.css('[data-test="todo-list_new"]')).nativeElement.click();
+        fixture.detectChanges();
+
+        expect(router.navigateByUrl).toHaveBeenCalledWith(router.createUrlTree([`/todo/new`]), expect.any(Object));
     });
 });

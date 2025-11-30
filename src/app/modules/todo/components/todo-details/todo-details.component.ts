@@ -14,14 +14,14 @@ import { TodoStore } from '../todo.store';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoDetailsComponent {
-    protected activatedRoute = inject(ActivatedRoute);
     // gebruik van de todostore in dit component
     private todoStore = inject(TodoStore);
+    protected activatedRoute = inject(ActivatedRoute);
 
     // ophalen van geselecteerde todoId uit de routing
-    protected activeTodoId = toSignal(this.activatedRoute.params.pipe( map((params) => params['todoId'] )));
+    protected activeTodoId = toSignal(this.activatedRoute.params.pipe(map((params) => params['todoId'])));
     // computed signal voor het checken of we een nieuwe todo willen aanmaken
-    protected newTodoMode = computed( () => this.activeTodoId() === 'new' );
+    protected newTodoMode = computed(() => this.activeTodoId() === 'new');
 
     // mapping van de variabelen uit de todo store
     protected todoItems = this.todoStore.todos;
@@ -29,9 +29,9 @@ export class TodoDetailsComponent {
 
     // reactief formulier voor een todo
     protected todoForm = new FormGroup({
-        id: new FormControl<number | null>({ value: null, disabled: true }),
+        id: new FormControl<number | null>(null),
         title: new FormControl('', Validators.required),
-        description: new FormControl('', Validators.required),
+        description: new FormControl(''),
         deadline: new FormControl(''),
         completed: new FormControl(false)
     });
@@ -57,4 +57,37 @@ export class TodoDetailsComponent {
             this.todoForm.reset();
         }
     });
+
+    // opslaan of aanmaken van todo item. op basis van wel of geen ID value een andere call naar de store
+    protected saveTodo = (): void => {
+        if (this.todoForm.invalid) return;
+
+        const formValue = this.todoForm.value;
+
+        if (formValue.id) {
+            this.todoStore.updateTodo({
+                id: formValue.id,
+                title: formValue.title ?? '',
+                description: formValue.description ?? '',
+                deadline: formValue.deadline ?? '',
+                completed: formValue.completed ?? false
+            });
+        } else {
+            this.todoStore.addTodo({
+                title: formValue.title ?? '',
+                description: formValue.description ?? '',
+                deadline: formValue.deadline ?? '',
+                completed: formValue.completed ?? false
+            });
+        }
+    };
+
+    // verwijderen van de actieve todo item
+    protected deleteTodo = (): void => {
+        const activeTodo = this.activeTodo();
+
+        if (activeTodo) {
+            this.todoStore.deleteTodo(activeTodo.id);
+        }
+    };
 }

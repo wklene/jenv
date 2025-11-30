@@ -12,5 +12,10 @@ const TodoSchema = z.object({
 // Type definieren adhv het schema
 export type Todo = z.infer<typeof TodoSchema>;
 
+// uitgebreide type van de todo item, met support voor een x aantal highlighted eigenschappen
+export type HighlightedTodo = Todo & {
+    highlights?: { [key in keyof Todo]?: string };
+};
+
 // Schema voor een array van Todo's
 export const TodoArraySchema = z.array(TodoSchema);

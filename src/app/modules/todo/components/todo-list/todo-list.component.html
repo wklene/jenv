@@ -7,14 +7,23 @@
         <span class="visually-hidden">Loading...</span>
     </div>
     } @else{
+    <!-- zoek component -->
+    <app-todo-search />
     <!-- loopen door de items -->
     @for( item of todoItems(); track item.id ){
     <div class="todo-row form-check" [class.active]="item.id == activeTodoId()" data-test="todo-list_row">
-        <input class="form-check-input" type="checkbox" [attr.id]="item.id" (change)="completeTodo(item)" [(ngModel)]="item.completed" />
+        <input
+            class="form-check-input"
+            type="checkbox"
+            [attr.id]="item.id"
+            (change)="toggleTodoCompletion(item)"
+            [(ngModel)]="item.completed"
+        />
         <!-- doorklikken naar de details -->
-        <div class="d-flex col-12" [routerLink]="['/', 'todo', item.id]">
+        <div class="d-flex col-12" [routerLink]="['/', 'todo', item.id]" data-test="todo-list_link">
             <div [style.width]="'inherit'">
-                <div>{{ item.title }}</div>
+                <!-- tonen van de highlighted property of anders de "normale" -->
+                <div [innerHTML]="item.highlights?.title ?? item.title"></div>
                 <sup>{{ item.deadline | date }}</sup>
             </div>
             <button type="button" class="btn">
@@ -23,5 +32,9 @@
         </div>
     </div>
     }
+    <!-- knop om nieuwe todo item toe te voegen -->
+    <button type="button" class="btn btn-outline-primary mt-3" data-test="todo-list_new" [routerLink]="['/', 'todo', 'new']">
+        Todo item toevoegen
+    </button>
     }
 </div>
