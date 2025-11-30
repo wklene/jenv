@@ -39,7 +39,7 @@ export class TodoStore {
                     return {
                         ...todo,
                         highlights: {
-                            title: todo.title.replace(regex, '<mark>$1</mark>')
+                            title: todo.title.replace(regex, '<mark class="p-0">$1</mark>')
                         }
                     };
                 })

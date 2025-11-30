@@ -3,6 +3,7 @@ import { z } from 'zod';
 // Definitie van een Zod schema, hiermee kunnen we data uit de backend valideren, zodat je geen onverwachte gegevens krijgt
 const TodoSchema = z.object({
     id: z.number().int(),
+    userId: z.number().int().optional(),
     title: z.string(),
     description: z.string().optional(),
     deadline: z.string().optional(),

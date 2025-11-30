@@ -4,13 +4,79 @@
         "title": "Chores",
         "description": "Take out the trash, clean the dishes",
         "deadline": "2025-12-04",
-        "completed": false
+        "completed": false,
+        "userId": 1
     },
     {
         "id": 2,
         "title": "Groceries",
         "description": "Do the groceries for the weekend",
         "deadline": "2025-11-06",
-        "completed": true
+        "completed": true,
+        "userId": 2
+    },
+    {
+        "id": 3,
+        "title": "Call Insurance",
+        "description": "Follow up on the claim for the broken window",
+        "deadline": "2025-12-10",
+        "completed": false,
+        "userId": 1
+    },
+    {
+        "id": 4,
+        "title": "Project Report",
+        "description": "Finalize Q4 spending report and submit to manager",
+        "deadline": "2025-12-01",
+        "completed": false,
+        "userId": 3
+    },
+    {
+        "id": 5,
+        "title": "Book Appointment",
+        "description": "Schedule a dentist check-up for January",
+        "deadline": "2025-11-20",
+        "completed": true,
+        "userId": 4
+    },
+    {
+        "id": 6,
+        "title": "Oil Change",
+        "description": "Take the car in for its regular 3-month service",
+        "deadline": "2025-12-05",
+        "completed": false,
+        "userId": 2
+    },
+    {
+        "id": 7,
+        "title": "Birthday Gift",
+        "description": "Buy a gift for Sarah's party on Saturday",
+        "deadline": "2025-12-07",
+        "completed": true,
+        "userId": 5
+    },
+    {
+        "id": 8,
+        "title": "Read Chapter 3",
+        "description": "Finish reading the assigned material for the evening class",
+        "deadline": "2025-12-02",
+        "completed": false,
+        "userId": 3
+    },
+    {
+        "id": 9,
+        "title": "Update Resume",
+        "description": "Add recent projects and review for new roles",
+        "deadline": "2025-12-31",
+        "completed": false,
+        "userId": 1
+    },
+    {
+        "id": 10,
+        "title": "Water Plants",
+        "description": "Give the indoor plants their weekly watering and check for pests",
+        "deadline": "2025-11-30",
+        "completed": true,
+        "userId": 4
     }
 ]

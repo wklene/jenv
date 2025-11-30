@@ -1,5 +1,5 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { Todo, TodoArraySchema } from './todo.model';
@@ -13,7 +13,7 @@ export class TodoService {
     // Locatie van mijn "Fake API"
     private readonly apiUrl = '/assets/todo.json';
 
-    // ophalen voor alle todo items
+    // ophalen voor alle todo items, authorisatie wordt op de backend gedaan
     getTodoItems(): Observable<Todo[]> {
         return this.httpClient.get<Todo[]>(this.apiUrl).pipe(
             // neppe vertraging om wat network latency te mocken ivm loading/spinners
